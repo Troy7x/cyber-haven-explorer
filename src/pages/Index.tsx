@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -9,11 +8,11 @@ import { useLanguage } from '@/context/LanguageContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { ExternalLink, ShieldAlert, Target, Binary, Database, User, Code, Lock } from 'lucide-react';
 import CyberButton from '@/components/CyberButton';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { t, language } = useLanguage();
 
-  // Initialize animations on scroll
   useEffect(() => {
     const animateOnScroll = () => {
       const elements = document.querySelectorAll('.animate-on-scroll');
@@ -34,7 +33,6 @@ const Index = () => {
     return () => window.removeEventListener('scroll', animateOnScroll);
   }, [language]);
 
-  // Chapter 1 data structure
   const chapter1Data = {
     id: 'chapter1',
     titleKey: 'chapter1.title',
@@ -93,7 +91,6 @@ const Index = () => {
     ]
   };
 
-  // Chapter 2 data structure
   const chapter2Data = {
     id: 'chapter2',
     titleKey: 'chapter2.title',
@@ -153,7 +150,6 @@ const Index = () => {
     ]
   };
 
-  // Reference sources data
   const referenceSources = {
     arabic: [
       {
@@ -223,7 +219,6 @@ const Index = () => {
     ]
   };
 
-  // Latest cyber threats data for the security feed section
   const latestThreats = [
     {
       title: "New Ransomware Strain Targeting Healthcare",
@@ -269,7 +264,6 @@ const Index = () => {
             <p className="text-white/80 leading-relaxed">{t('intro.p2')}</p>
             <p className="text-white/80 leading-relaxed">{t('intro.p3')}</p>
             
-            {/* Added visual element - Terminal-like code output */}
             <div className="mt-8 bg-cyber-darker p-4 rounded-md border border-cyber-accent/20 font-mono text-sm overflow-hidden">
               <div className="flex items-center mb-2 text-white/60 text-xs">
                 <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
@@ -285,7 +279,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* New Security Feed Section */}
           <div className="mt-16 animate-on-scroll opacity-0 translate-y-8">
             <div className="flex items-center mb-6">
               <ShieldAlert className="text-red-400 mr-2" />
@@ -491,7 +484,6 @@ const Index = () => {
           </div>
           
           <div className="space-y-12">
-            {/* Arabic Sources */}
             <div className="cyber-card p-8 rounded-2xl animate-on-scroll opacity-0 translate-y-8">
               <h3 className="text-white mb-6 pb-3 border-b border-white/10">{t('references.arabic')}</h3>
               <ul className="list-disc list-inside space-y-3 text-white/80">
@@ -505,7 +497,6 @@ const Index = () => {
               </ul>
             </div>
             
-            {/* International Sources */}
             <div className="cyber-card p-8 rounded-2xl animate-on-scroll opacity-0 translate-y-8">
               <h3 className="text-white mb-6 pb-3 border-b border-white/10">{t('references.international')}</h3>
               <ul className="list-disc list-inside space-y-3 text-white/80">
@@ -519,7 +510,6 @@ const Index = () => {
               </ul>
             </div>
             
-            {/* Online Sources */}
             <div className="cyber-card p-8 rounded-2xl animate-on-scroll opacity-0 translate-y-8">
               <h3 className="text-white mb-6 pb-3 border-b border-white/10">{t('references.online')}</h3>
               <ul className="list-disc list-inside space-y-3 text-white/80">
@@ -534,7 +524,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Citation Guidelines */}
           <div className="mt-12 cyber-card p-6 rounded-xl animate-on-scroll opacity-0 translate-y-8">
             <h4 className="neon-text mb-4">{t('references.citationTitle')}</h4>
             <p className="text-white/80 text-sm">{t('references.citationDesc')}</p>
@@ -542,7 +531,6 @@ const Index = () => {
         </div>
       </SectionContainer>
 
-      {/* Footer */}
       <footer className="py-10 border-t border-white/10 bg-cyber-darker">
         <div className="container mx-auto px-4 text-center">
           <p className="text-white/60 text-sm">

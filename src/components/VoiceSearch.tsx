@@ -4,6 +4,55 @@ import { Mic, X } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import CyberButton from './CyberButton';
 
+// Define TypeScript interfaces for the Web Speech API
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number;
+  results: {
+    [index: number]: {
+      [index: number]: {
+        transcript: string;
+        confidence: number;
+      };
+    };
+    item(index: number): {
+      [index: number]: {
+        transcript: string;
+      };
+    };
+  };
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+// Define the SpeechRecognition interface
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onstart: (event: Event) => void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  onend: (event: Event) => void;
+}
+
+// Define the SpeechRecognition constructor
+interface SpeechRecognitionConstructor {
+  new(): SpeechRecognition;
+}
+
+// Add types to the global Window object
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  }
+}
+
 const VoiceSearch: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
@@ -32,11 +81,13 @@ const VoiceSearch: React.FC = () => {
   const currentMessages = language === 'ar' ? messages.ar : messages.en;
 
   useEffect(() => {
-    let recognition: any = null;
+    let recognition: SpeechRecognition | null = null;
 
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      recognition = new SpeechRecognition();
+    // Get the appropriate SpeechRecognition constructor
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognitionAPI) {
+      recognition = new SpeechRecognitionAPI();
       recognition.continuous = false;
       recognition.interimResults = true;
       
@@ -50,7 +101,7 @@ const VoiceSearch: React.FC = () => {
         setIsListening(true);
       };
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const current = event.resultIndex;
         const result = event.results[current][0].transcript;
         setTranscript(result);
@@ -63,7 +114,7 @@ const VoiceSearch: React.FC = () => {
         }
       };
 
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error', event.error);
         setIsListening(false);
       };
@@ -80,9 +131,11 @@ const VoiceSearch: React.FC = () => {
     setTranscript('');
     setResponse('');
     
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      const recognition = new SpeechRecognition();
+    // Get the appropriate SpeechRecognition constructor
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognitionAPI) {
+      const recognition = new SpeechRecognitionAPI();
       
       if (language === 'ar') {
         recognition.lang = 'ar-SA';
@@ -96,7 +149,7 @@ const VoiceSearch: React.FC = () => {
         setIsListening(true);
       };
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const current = event.resultIndex;
         const result = event.results[current][0].transcript;
         setTranscript(result);
@@ -104,8 +157,9 @@ const VoiceSearch: React.FC = () => {
 
       recognition.onend = () => {
         setIsListening(false);
-        if (transcript || event.results[0][0].transcript) {
-          processTranscript(transcript || event.results[0][0].transcript);
+        if (transcript || (event.results && event.results[0] && event.results[0][0].transcript)) {
+          const finalTranscript = transcript || (event.results[0][0].transcript);
+          processTranscript(finalTranscript);
         }
       };
     } else {
@@ -114,9 +168,10 @@ const VoiceSearch: React.FC = () => {
   };
 
   const stopListening = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      const recognition = new SpeechRecognition();
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (SpeechRecognitionAPI) {
+      const recognition = new SpeechRecognitionAPI();
       recognition.stop();
       setIsListening(false);
     }
