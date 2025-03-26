@@ -1,6 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -77,9 +78,28 @@
     @apply text-xl sm:text-2xl;
   }
 
+  /* Hacker font for headings */
+  .cyber-heading {
+    font-family: 'Orbitron', sans-serif;
+    @apply text-cyber-accent;
+  }
+
   /* Glass effect */
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg;
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg relative overflow-hidden;
+  }
+  
+  .glass::before {
+    @apply content-[''] absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-30 pointer-events-none;
+  }
+
+  .glass:hover {
+    @apply bg-white/8 border-white/15 transition-all duration-300;
+  }
+
+  /* Cyber card with hover glow effect */
+  .cyber-card {
+    @apply glass transition-all duration-300 hover:shadow-[0_0_25px_rgba(14,165,233,0.2)];
   }
 
   /* Cybersecurity section styling */
@@ -197,6 +217,107 @@
       repeating-linear-gradient(90deg, rgba(14, 165, 233, 0.2), rgba(14, 165, 233, 0.2) 1px, transparent 1px, transparent 30px);
     background-size: 30px 30px;
     animation: rain 20s linear infinite;
+  }
+
+  /* Binary background */
+  .binary-bg {
+    position: relative;
+  }
+  
+  .binary-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='0' y='15' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E01010110%3C/text%3E%3Ctext x='20' y='35' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E10110101%3C/text%3E%3Ctext x='10' y='55' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E01001010%3C/text%3E%3Ctext x='30' y='75' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E11001100%3C/text%3E%3Ctext x='0' y='95' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E00110011%3C/text%3E%3Ctext x='15' y='115' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E10101010%3C/text%3E%3Ctext x='25' y='135' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E01100110%3C/text%3E%3Ctext x='5' y='155' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E11011011%3C/text%3E%3Ctext x='15' y='175' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E01010101%3C/text%3E%3Ctext x='25' y='195' font-family='monospace' font-size='10' fill='rgba(14, 165, 233, 0.1)'%3E10101010%3C/text%3E%3C/svg%3E");
+    background-repeat: repeat;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Neon text effect */
+  .neon-text {
+    @apply text-cyber-accent;
+    text-shadow: 0 0 5px rgba(14, 165, 233, 0.5), 0 0 10px rgba(14, 165, 233, 0.3), 0 0 15px rgba(14, 165, 233, 0.3), 0 0 20px rgba(14, 165, 233, 0.3);
+  }
+
+  /* Animated cyber link */
+  .cyber-link {
+    @apply relative inline-block text-cyan-400 hover:text-cyan-300 transition-colors;
+    text-decoration: none;
+  }
+  
+  .cyber-link::after {
+    content: '';
+    @apply absolute left-0 bottom-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transform scale-x-0 origin-bottom-right transition-transform duration-300;
+  }
+  
+  .cyber-link:hover::after {
+    @apply transform scale-x-100 origin-bottom-left;
+  }
+
+  /* Hacking animation for code blocks */
+  .hacking-animation {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid #0ea5e9;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+  
+  /* Interactive source link - with hover effect */
+  .source-link {
+    @apply text-cyan-400 relative py-1 transition-all duration-300;
+  }
+
+  .source-link::before {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-400 transition-all duration-300;
+  }
+
+  .source-link:hover {
+    @apply text-cyan-300;
+  }
+
+  .source-link:hover::before {
+    @apply w-full;
+  }
+
+  /* External link icon for source links */
+  .source-link::after {
+    content: '↗';
+    @apply ml-1 inline-block opacity-0 -translate-y-1 transition-all duration-300;
+  }
+
+  .source-link:hover::after {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Cyber button glow */
+  .cyber-btn-glow {
+    @apply relative overflow-hidden;
+    background: linear-gradient(90deg, rgba(14, 165, 233, 0.1), rgba(56, 189, 248, 0.1)) padding-box,
+                linear-gradient(90deg, rgba(14, 165, 233, 0.5), rgba(56, 189, 248, 0.5)) border-box;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .cyber-btn-glow:hover {
+    background: linear-gradient(90deg, rgba(14, 165, 233, 0.2), rgba(56, 189, 248, 0.2)) padding-box,
+                linear-gradient(90deg, rgba(14, 165, 233, 0.8), rgba(56, 189, 248, 0.8)) border-box;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+  }
+
+  /* Sidebar content glow */
+  .sidebar-glow {
+    @apply border-l-2 border-cyber-accent/30 pl-4 relative;
+  }
+
+  .sidebar-glow::before {
+    content: '';
+    @apply absolute top-0 left-0 w-0.5 h-full bg-cyber-accent/50 shadow-[0_0_8px_rgba(14,165,233,0.6)];
   }
 }
 
@@ -406,5 +527,35 @@
   }
   100% {
     background-position: 0 1000px;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(14, 165, 233, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.6);
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #0ea5e9 }
+}
+
+@keyframes neon-flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.99;
+    text-shadow: 0 0 5px rgba(14, 165, 233, 0.5), 0 0 10px rgba(14, 165, 233, 0.3);
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    text-shadow: none;
   }
 }

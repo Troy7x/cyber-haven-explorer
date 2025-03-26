@@ -1,13 +1,31 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Shield, Lock, Code } from 'lucide-react';
+import { ArrowDown, Shield, Lock, Code, Terminal, Eye, Cpu } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const { t, language } = useLanguage();
   const textContainerRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  // Typing effect for code display
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    
+    const startTypingEffect = () => {
+      setTimeout(() => {
+        setIsTypingComplete(true);
+      }, 3000);
+    };
+    
+    startTypingEffect();
+    
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [language]);
 
   // Animation effect for text elements
   useEffect(() => {
@@ -23,13 +41,13 @@ const Hero: React.FC = () => {
       }, 200 + (index * 100));
     });
 
-    // Create animated particles
+    // Create animated particles with a more complex behavior
     const createParticles = () => {
       if (!particlesRef.current) return;
       
       particlesRef.current.innerHTML = '';
       
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.classList.add('cyber-particle');
         
@@ -52,6 +70,11 @@ const Hero: React.FC = () => {
         // Random delay
         particle.style.animationDelay = `${Math.random() * 5}s`;
         
+        // Random color variation
+        const colors = ['#0ea5e9', '#38bdf8', '#0284c7', '#7dd3fc'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.backgroundColor = randomColor;
+        
         particlesRef.current.appendChild(particle);
       }
     };
@@ -65,25 +88,61 @@ const Hero: React.FC = () => {
       window.removeEventListener('resize', createParticles);
     };
   }, [language]); // Re-run when language changes
+
+  // Scrolling matrix effect
+  const Matrix = () => {
+    return (
+      <div className="absolute inset-0 overflow-hidden opacity-20">
+        <div className="code-rain"></div>
+      </div>
+    );
+  };
+
+  // Floating icons for visual interest
+  const FloatingIcons = () => {
+    return (
+      <>
+        <div className="absolute top-1/4 -left-10 opacity-20 hidden lg:block animate-float" style={{animationDuration: '15s'}}>
+          <Lock className="w-32 h-32 text-cyber-accent" />
+        </div>
+        <div className="absolute bottom-1/3 -right-16 opacity-20 hidden lg:block animate-float-delay" style={{animationDuration: '18s'}}>
+          <Code className="w-24 h-24 text-purple-400" />
+        </div>
+        <div className="absolute top-2/3 left-20 opacity-20 hidden lg:block animate-float" style={{animationDuration: '12s', animationDelay: '2s'}}>
+          <Terminal className="w-20 h-20 text-emerald-400" />
+        </div>
+        <div className="absolute top-1/3 right-1/4 opacity-20 hidden lg:block animate-float-delay" style={{animationDuration: '20s', animationDelay: '4s'}}>
+          <Shield className="w-16 h-16 text-orange-400" />
+        </div>
+        <div className="absolute bottom-1/4 left-1/3 opacity-20 hidden lg:block animate-float" style={{animationDuration: '17s', animationDelay: '1s'}}>
+          <Eye className="w-18 h-18 text-red-400" />
+        </div>
+      </>
+    );
+  };
   
   return (
     <section id="home" className="min-h-screen relative overflow-hidden flex items-center pt-16">
-      {/* Particles background */}
+      {/* Advanced particles background with more particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none z-0 overflow-hidden"></div>
       
       {/* Matrix-like code rain effect */}
       <div className="absolute inset-0 bg-cyber-darker opacity-80 z-0">
-        <div className="code-rain"></div>
+        <Matrix />
       </div>
       
       {/* Grid background */}
       <div className="absolute inset-0 grid-bg opacity-30 z-0"></div>
       
-      {/* Background gradient effects */}
+      {/* Background gradient effects - more vibrant */}
       <div className="absolute top-0 right-0 w-full h-full pointer-events-none z-0">
-        <div className="absolute top-0 -right-1/3 w-1/2 h-1/2 bg-cyber-accent/10 rounded-full filter blur-[120px] animate-float"></div>
-        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-purple-700/10 rounded-full filter blur-[120px] animate-float-delay"></div>
+        <div className="absolute top-0 -right-1/3 w-1/2 h-1/2 bg-cyber-accent/15 rounded-full filter blur-[120px] animate-float"></div>
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-purple-700/15 rounded-full filter blur-[120px] animate-float-delay"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-1/3 h-1/3 bg-emerald-700/10 rounded-full filter blur-[100px]" style={{animation: 'float 15s infinite ease-in-out 2s'}}></div>
       </div>
+      
+      {/* Floating Icons for visual interest */}
+      <FloatingIcons />
       
       {/* Content */}
       <div className="container mx-auto px-4 pt-16 md:pt-24 lg:pt-32 z-10 relative">
@@ -98,7 +157,7 @@ const Hero: React.FC = () => {
           
           {/* Title with glitch effect */}
           <h1 
-            className="animate-on-load cyber-glitch-text text-gradient font-bold mb-6 max-w-5xl transition-all duration-500 opacity-0 transform translate-y-6"
+            className="animate-on-load cyber-glitch-text text-gradient font-bold mb-6 max-w-5xl transition-all duration-500 opacity-0 transform translate-y-6 cyber-heading"
             data-text={t('hero.title')}
           >
             {t('hero.title')}
@@ -111,19 +170,42 @@ const Hero: React.FC = () => {
             {t('hero.description')}
           </p>
           
-          {/* Floating icon elements */}
-          <div className="absolute top-1/4 -left-20 opacity-20 hidden lg:block">
-            <Lock className="w-32 h-32 text-cyber-accent animate-float" />
-          </div>
-          <div className="absolute bottom-1/3 -right-16 opacity-20 hidden lg:block">
-            <Code className="w-24 h-24 text-purple-400 animate-float-delay" />
+          {/* Terminal window effect */}
+          <div className="animate-on-load opacity-0 transform translate-y-6 max-w-2xl w-full bg-cyber-darker p-4 rounded-md border border-cyber-accent/30 mb-10 shadow-[0_0_20px_rgba(14,165,233,0.1)] overflow-hidden">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex">
+                <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div className="text-white/50 text-xs">hack.sh</div>
+            </div>
+            
+            <div className="text-left font-mono">
+              <div className="flex">
+                <span className="text-green-400 mr-2">$</span>
+                <div className={`text-cyan-400 overflow-hidden whitespace-nowrap ${!isTypingComplete ? 'border-r-2 border-white/50 animate-[typing_3s_steps(40,end),blink-caret_0.75s_step-end_infinite]' : ''}`} style={{ width: isTypingComplete ? 'auto' : '0' }}>
+                  sudo ./exploit -t target.com -p 443 --force
+                </div>
+              </div>
+              
+              {isTypingComplete && (
+                <>
+                  <p className="text-yellow-400 mt-1">[*] Scanning target for vulnerabilities...</p>
+                  <p className="text-yellow-400 mt-1">[*] Multiple entry points detected</p>
+                  <p className="text-red-400 mt-1">[!] WARNING: Intrusion Detection System active</p>
+                  <p className="text-green-400 mt-1">[+] Bypassing security measures...</p>
+                  <p className="text-white mt-1">Press any key to continue or CTRL+C to abort</p>
+                </>
+              )}
+            </div>
           </div>
           
           {/* CTA Button */}
           <div className="animate-on-load transition-all duration-500 opacity-0 transform translate-y-6 relative z-10">
             <Button 
               variant="default"
-              className="cyber-btn px-8 py-6 text-lg bg-gradient-to-r from-cyber-accent to-blue-500 hover:from-cyber-accent-light hover:to-blue-400 border-none shadow-[0_0_15px_rgba(14,165,233,0.4)] hover:shadow-[0_0_25px_rgba(14,165,233,0.6)] transition-all duration-300"
+              className="cyber-btn cyber-btn-glow px-8 py-6 text-lg transition-all duration-300 shadow-[0_0_20px_rgba(14,165,233,0.4)]"
               onClick={() => {
                 document.getElementById('introduction')?.scrollIntoView({ behavior: 'smooth' });
               }}
