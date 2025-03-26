@@ -158,7 +158,8 @@ const VoiceSearch: React.FC = () => {
       recognition.onend = () => {
         setIsListening(false);
         if (transcript || (event.results && event.results[0] && event.results[0][0].transcript)) {
-          const finalTranscript = transcript || (event.results[0][0].transcript);
+          // Fix this line to use the event with the correct type
+          const finalTranscript = transcript || event.results[0][0].transcript;
           processTranscript(finalTranscript);
         }
       };
