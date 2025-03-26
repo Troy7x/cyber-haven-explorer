@@ -58,6 +58,7 @@ const VoiceSearch: React.FC = () => {
   const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
   const { language } = useLanguage();
+  const [recognitionResult, setRecognitionResult] = useState<string | null>(null);
 
   const messages = {
     en: {
@@ -105,6 +106,7 @@ const VoiceSearch: React.FC = () => {
         const current = event.resultIndex;
         const result = event.results[current][0].transcript;
         setTranscript(result);
+        setRecognitionResult(result);
       };
 
       recognition.onend = () => {
@@ -130,6 +132,7 @@ const VoiceSearch: React.FC = () => {
   const startListening = () => {
     setTranscript('');
     setResponse('');
+    setRecognitionResult(null);
     
     // Get the appropriate SpeechRecognition constructor
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -153,13 +156,14 @@ const VoiceSearch: React.FC = () => {
         const current = event.resultIndex;
         const result = event.results[current][0].transcript;
         setTranscript(result);
+        setRecognitionResult(result);
       };
 
       recognition.onend = () => {
         setIsListening(false);
-        if (transcript || (event.results && event.results[0] && event.results[0][0].transcript)) {
-          // Fix this line to use the event with the correct type
-          const finalTranscript = transcript || event.results[0][0].transcript;
+        // Using the transcript from state or recognitionResult instead of from the event
+        const finalTranscript = transcript || recognitionResult;
+        if (finalTranscript) {
           processTranscript(finalTranscript);
         }
       };
