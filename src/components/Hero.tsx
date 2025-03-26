@@ -1,8 +1,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { Button } from '@/components/ui/button';
 import { ArrowDown, Shield, Lock, Code, Terminal, Eye, Cpu } from 'lucide-react';
+import CyberButton from './CyberButton';
+import HexagonNetwork from './HexagonNetwork';
 
 const Hero: React.FC = () => {
   const { t, language } = useLanguage();
@@ -89,7 +90,7 @@ const Hero: React.FC = () => {
     };
   }, [language]); // Re-run when language changes
 
-  // Scrolling matrix effect
+  // Matrix code rain effect
   const Matrix = () => {
     return (
       <div className="absolute inset-0 overflow-hidden opacity-20">
@@ -125,6 +126,9 @@ const Hero: React.FC = () => {
     <section id="home" className="min-h-screen relative overflow-hidden flex items-center pt-16">
       {/* Advanced particles background with more particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none z-0 overflow-hidden"></div>
+      
+      {/* Hexagon network background */}
+      <HexagonNetwork nodeCount={30} />
       
       {/* Matrix-like code rain effect */}
       <div className="absolute inset-0 bg-cyber-darker opacity-80 z-0">
@@ -201,18 +205,18 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
-          {/* CTA Button */}
+          {/* CTA Button - Now using our new 3D Button component */}
           <div className="animate-on-load transition-all duration-500 opacity-0 transform translate-y-6 relative z-10">
-            <Button 
-              variant="default"
-              className="cyber-btn cyber-btn-glow px-8 py-6 text-lg transition-all duration-300 shadow-[0_0_20px_rgba(14,165,233,0.4)]"
+            <CyberButton 
+              variant="3d"
+              className="px-8 py-6 text-lg"
               onClick={() => {
                 document.getElementById('introduction')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               {t('hero.cta')}
               <ArrowDown className="ml-2 h-5 w-5 animate-bounce" />
-            </Button>
+            </CyberButton>
           </div>
           
           {/* Visual Indicator */}

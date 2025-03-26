@@ -4,10 +4,11 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import SectionContainer from '@/components/SectionContainer';
 import ChapterSection from '@/components/ChapterSection';
+import VoiceSearch from '@/components/VoiceSearch';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { ExternalLink, ShieldAlert, Target, Binary, Database, User, Code, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import CyberButton from '@/components/CyberButton';
 
 const Index = () => {
   const { t, language } = useLanguage();
@@ -309,6 +310,24 @@ const Index = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </SectionContainer>
+
+      {/* Voice Search Section */}
+      <SectionContainer id="voice-search" className="bg-cyber-darker">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 animate-on-scroll opacity-0 translate-y-8">
+            <h2 className="cyber-heading text-gradient mb-4">
+              {language === 'ar' ? 'مساعدك الصوتي في الأمن السيبراني' : 'Your Cybersecurity Voice Assistant'}
+            </h2>
+            <p className="text-xl text-white/70">
+              {language === 'ar' ? 'تحدث مع المساعد للحصول على معلومات حول الأمن السيبراني والقوانين ذات الصلة' : 'Speak to the assistant for information about cybersecurity and related laws'}
+            </p>
+          </div>
+          
+          <div className="animate-on-scroll opacity-0 translate-y-8">
+            <VoiceSearch />
           </div>
         </div>
       </SectionContainer>

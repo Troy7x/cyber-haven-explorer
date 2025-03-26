@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
@@ -318,6 +319,224 @@
     content: '';
     @apply absolute top-0 left-0 w-0.5 h-full bg-cyber-accent/50 shadow-[0_0_8px_rgba(14,165,233,0.6)];
   }
+
+  /* NEW: 3D Button Effect with Sound */
+  .cyber-btn-3d {
+    @apply relative transform transition-all duration-200 overflow-hidden bg-gradient-to-r from-cyber-accent to-cyber-accent-light text-white font-medium py-2 px-6 rounded-md;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 0 0 rgba(6, 95, 135, 1), 
+                0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .cyber-btn-3d:hover {
+    @apply transform translate-y-0.5;
+    box-shadow: 0 2px 0 0 rgba(6, 95, 135, 1),
+                0 6px 15px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(14, 165, 233, 0.6);
+  }
+
+  .cyber-btn-3d:active {
+    @apply transform translate-y-1;
+    box-shadow: 0 0 0 0 rgba(6, 95, 135, 1),
+                0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .cyber-btn-3d::before {
+    content: '';
+    @apply absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-300;
+  }
+
+  .cyber-btn-3d:hover::before {
+    @apply opacity-100;
+  }
+
+  /* NEW: Ripple Effect */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+
+  /* NEW: Hexagon Grid */
+  .hexagon-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5.5L7.5 18.2v25.6L30 56.5l22.5-12.7V18.2L30 5.5z' stroke='rgba(14, 165, 233, 0.1)' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hexagon-node {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #0ea5e9;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px rgba(14, 165, 233, 0.4);
+    opacity: 0;
+    animation: pulse-node 3s infinite ease-in-out;
+  }
+
+  /* NEW: Cyberpunk Menu */
+  .cyber-radial-menu {
+    @apply fixed bottom-10 right-10 z-50;
+  }
+
+  .cyber-radial-trigger {
+    @apply w-16 h-16 rounded-full flex items-center justify-center bg-cyber-accent shadow-lg cursor-pointer relative z-10;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+  }
+
+  .cyber-radial-items {
+    @apply absolute bottom-0 right-0 transform scale-0 origin-bottom-right;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .cyber-radial-menu.active .cyber-radial-items {
+    @apply transform scale-100;
+  }
+
+  .cyber-radial-item {
+    @apply absolute flex items-center justify-center w-12 h-12 rounded-full bg-cyber-dark border border-cyber-accent;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+  }
+
+  /* NEW: Threat Level Meter */
+  .threat-meter {
+    @apply fixed right-4 top-1/2 transform -translate-y-1/2 h-1/3 w-2 bg-gradient-to-t from-green-500 via-yellow-500 to-red-500 rounded-full overflow-hidden z-40;
+  }
+
+  .threat-level {
+    @apply absolute bottom-0 left-0 right-0 bg-white;
+    transition: height 0.3s ease-out;
+  }
+
+  .threat-indicator {
+    @apply absolute -left-8 w-10 h-6 flex items-center justify-center;
+    transform: translateY(-50%);
+    transition: top 0.3s ease-out;
+  }
+
+  .threat-indicator::before {
+    content: '';
+    @apply absolute inset-0 bg-cyber-darker border border-cyber-accent rounded-md;
+  }
+
+  .threat-indicator::after {
+    content: '';
+    @apply absolute w-8 h-0.5 bg-cyber-accent right-0 transform translate-x-full;
+  }
+
+  /* NEW: Code Explosion */
+  .code-explosion {
+    position: absolute;
+    pointer-events: none;
+    animation: code-explode 0.6s forwards;
+  }
+
+  .code-particle {
+    position: absolute;
+    font-family: 'Fira Code', monospace;
+    color: #0ea5e9;
+    font-size: 10px;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  /* NEW: Interface Crack Effect */
+  .interface-crack {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='900' height='600' viewBox='0 0 900 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M450 0 L460 150 L500 170 L480 250 L520 300 L500 350 L550 450 L450 600' stroke='rgba(14, 165, 233, 0.4)' fill='none' stroke-width='2'/%3E%3Cpath d='M450 0 L400 100 L420 200 L350 300 L400 350 L380 450 L450 600' stroke='rgba(14, 165, 233, 0.4)' fill='none' stroke-width='2'/%3E%3Cpath d='M400 100 L300 150 L350 200 L250 250' stroke='rgba(14, 165, 233, 0.4)' fill='none' stroke-width='2'/%3E%3Cpath d='M500 170 L600 200 L580 300 L650 350' stroke='rgba(14, 165, 233, 0.4)' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+    transition: opacity 0.5s ease;
+  }
+
+  /* NEW: Access Granted Animation */
+  .access-granted-overlay {
+    @apply fixed inset-0 flex items-center justify-center z-[1000] bg-black/80 backdrop-blur-md opacity-0 invisible;
+    transition: opacity 0.5s ease, visibility 0.5s;
+  }
+
+  .access-granted-content {
+    @apply relative text-center transform scale-90;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .access-granted-overlay.active {
+    @apply opacity-100 visible;
+  }
+
+  .access-granted-overlay.active .access-granted-content {
+    @apply transform scale-100;
+  }
+
+  /* NEW: Cyber Terminal */
+  .cyber-terminal {
+    @apply bg-black/80 border border-cyber-accent rounded-md p-4 font-mono text-green-400 text-sm;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  }
+
+  .cyber-terminal-header {
+    @apply flex items-center pb-2 border-b border-cyber-accent/30 mb-2;
+  }
+
+  .cyber-terminal-content {
+    @apply h-60 overflow-auto;
+  }
+
+  .cyber-terminal-prompt {
+    @apply flex;
+  }
+
+  .cyber-terminal-prompt:before {
+    content: '>';
+    @apply mr-2 text-cyber-accent;
+  }
+
+  .cyber-terminal-input {
+    @apply bg-transparent border-none focus:outline-none text-green-400 w-full;
+  }
+
+  /* NEW: Voice Search Animation */
+  .voice-search-indicator {
+    @apply flex items-center justify-center space-x-1;
+  }
+
+  .voice-search-bar {
+    @apply w-1 h-8 bg-cyber-accent rounded-full transform;
+    animation: voice-animation 0.5s infinite ease alternate;
+  }
+
+  .voice-search-bar:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .voice-search-bar:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .voice-search-bar:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  .voice-search-bar:nth-child(5) {
+    animation-delay: 0.4s;
+  }
 }
 
 /* Custom scrollbar */
@@ -556,5 +775,51 @@
   20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
     opacity: 0.4;
     text-shadow: none;
+  }
+}
+
+/* NEW: Ripple Animation */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* NEW: Pulsating Node Animation */
+@keyframes pulse-node {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* NEW: Code Explosion Animation */
+@keyframes code-explode {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--translateX), var(--translateY)) scale(0);
+  }
+}
+
+/* NEW: Voice Animation */
+@keyframes voice-animation {
+  from {
+    transform: scaleY(0.3);
+  }
+  to {
+    transform: scaleY(1);
   }
 }
