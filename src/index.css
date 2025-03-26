@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
@@ -94,7 +93,7 @@
   }
 
   .glass:hover {
-    @apply bg-white/8 border-white/15 transition-all duration-300;
+    @apply bg-white/10 border-white/15 transition-all duration-300;
   }
 
   /* Cyber card with hover glow effect */
