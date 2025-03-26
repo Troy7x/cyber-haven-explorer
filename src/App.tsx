@@ -10,6 +10,25 @@ import NotFound from "./pages/NotFound";
 // Create a client
 const queryClient = new QueryClient();
 
+// Preload images for better performance
+const preloadImages = () => {
+  const images = [
+    '/images/background.svg',
+    '/images/hacker-dark.jpg',
+    '/images/code-matrix.jpg',
+    '/images/legal-cyber.jpg',
+    '/images/security-lock.jpg'
+  ];
+  
+  images.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
+
+// Preload images when the app starts
+preloadImages();
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
